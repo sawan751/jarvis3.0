@@ -1,0 +1,12 @@
+groq
+python-dotenv
+speechrecognition
+pyttsx3
+selenium
+googlesearch-python
+requests
+numpy
+pydub
+sounddevice
+nltk
+regex
