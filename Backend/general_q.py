@@ -65,8 +65,8 @@ def general(user_input):
             response_text += response
             print(response, end="")
             
-        history.append({"role": "assistant", "content":response_text})
-        save_hist(history)
+        #history.append({"role": "assistant", "content":response_text})
+        #save_hist(history)
         
 
         return response_text.strip()  # ✅ return answer string
