@@ -1,68 +1,114 @@
 # brain.py
-import os
-from groq import Groq
 from general_q import general
-from dotenv import load_dotenv
+
+def classify_query(text):
+    """
+    Fast keyword-based classification of queries into system, realtime, or general.
+    Returns a list of matching categories ordered by priority.
+    """
+    text_lower = text.lower()
+    matches = []
+
+    # System keywords - related to system operations
+    system_keywords = [
+        'open', 'close', 'modify', 'volume', 'shutdown', 'restart', 'start', 'stop',
+        'launch', 'run', 'execute', 'file', 'folder', 'directory', 'window',
+        'application', 'program', 'browser', 'settings', 'control'
+    ]
+
+    # Realtime keywords - require live data
+    realtime_keywords = [
+        'time', 'date', 'weather', 'temperature', 'forecast', 'stock', 'price',
+        'news', 'current', 'now', 'today', 'tomorrow', 'yesterday', 'live',
+        'update', 'latest', 'real-time', 'clock', 'calendar', 'schedule'
+    ]
+
+    # Question indicators - suggest general queries
+    question_indicators = [
+        'what', 'how', 'why', 'when', 'where', 'who', 'tell me', 'explain',
+        'about', 'is', 'are', 'do', 'does', 'can', 'could', 'would', 'should'
+    ]
+
+    # Check for system keywords
+    has_system = any(keyword in text_lower for keyword in system_keywords)
+    if has_system:
+        matches.append("system")
+
+    # Check for realtime keywords
+    has_realtime = any(keyword in text_lower for keyword in realtime_keywords)
+    if has_realtime:
+        matches.append("realtime")
+
+    # Check for general questions (if not already classified as realtime)
+    has_questions = any(indicator in text_lower for indicator in question_indicators)
+    if has_questions and not has_realtime:
+        matches.append("general")
+
+    # If no specific keywords found, default to general
+    if not matches:
+        matches.append("general")
+
+    return matches
 
 def brainQ(text):
     try:
-        # Load environment variables from api.env
-        env_file = "api.env"
-        load_dotenv(env_file)  # Explicitly load api.env
-
-        # Retrieve the API key
-        API_KEY = os.getenv("GROK_API_KEY")
-
-        # Initialize Groq client
-        client = Groq(api_key=API_KEY)
-
-        # System prompt
-        system_prompt = """You are a prompt classifier that predicts if the input is related to
-        system (e.g., queries about open, modify, close, volume), 
-        realtime (requires live data, e.g., time, date, stocks), 
-        or general (normal questions). 
-        Answer only: system, realtime, or general. I can also ask in Hindi."""
-
-        # Request classification
-        completion = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": text}
-            ],
-            temperature=1,
-            max_completion_tokens=1024,
-            top_p=1,
-            stream=True,
-            stop=None
-        )
-
-        # Collect streamed response
-        response = ""
-        for chunk in completion:
-            chunk_content = chunk.choices[0].delta.content or ""
-            response += chunk_content
-            print(chunk_content, end="")
-
-        # Normalize response
-        response = response.lower().strip()
-
-        # Handle classification
-        if response == "system":
-            print("\n🔹 System task detected")
-            # TODO: Call system handler here
-        elif response == "general":
-            print("\n🔹 General query detected")
-            return general(text)
-        elif response == "realtime":
-            print("\n🔹 Realtime query detected")
-            return general(text)
-
-        return response  # Useful if you want to capture output programmatically
+        # First, check if the whole text contains system keywords
+        whole_response = classify_query(text)
+        has_system = "system" in whole_response
+        
+        if has_system:
+            # Split the input text into multiple queries based on delimiters
+            delimiters = [' and ', ' then ', '. ', '! ', '? ']
+            queries = [text]
+            for delimiter in delimiters:
+                new_queries = []
+                for q in queries:
+                    new_queries.extend(q.split(delimiter))
+                queries = new_queries
+            
+            # Remove empty strings and strip whitespace
+            queries = [q.strip() for q in queries if q.strip()]
+            
+            results = []
+            for query in queries:
+                # Use fast keyword-based classification for each query
+                response = classify_query(query)
+                
+                # Handle classification
+                if "system" in response:
+                    print(f"\n🔹 System task detected: {query}")
+                    # TODO: Call system handler here
+                    results.append(f"System task: {query}")
+                elif "general" in response:
+                    print(f"\n🔹 General query detected: {query}")
+                    result = general(query)
+                    results.append(result)
+                elif "realtime" in response:
+                    print(f"\n🔹 Realtime query detected: {query}")
+                    result = general(query)  # Assuming realtime uses general for now
+                    results.append(result)
+                else:
+                    results.append(f"Unknown query: {query}")
+            
+            return "\n".join(results)  # Join results into a single string for speaking
+        else:
+            # Treat as single query
+            response = whole_response
+            
+            # Handle classification
+            if "system" in response:
+                print("\n🔹 System task detected")
+                # TODO: Call system handler here
+                return f"System task: {text}"
+            elif "general" in response:
+                print("\n🔹 General query detected")
+                return general(text)
+            elif "realtime" in response:
+                print("\n🔹 Realtime query detected")
+                return general(text)
+            else:
+                return f"Unknown query: {text}"
 
     except Exception as e:
         print(f"An error occurred: {e}")
         return None
-
-
-# Example usage
