@@ -5,6 +5,21 @@ import os
 
 def general(user_input):
     
+    # Load API key
+    env_file = 'api.env'
+    load_dotenv(env_file)
+    Api_key = os.getenv('GROK_API_KEY')
+
+    # Initialize client
+    client = Groq(api_key=Api_key)
+    
+
+    # System prompt
+    system_prompt = """You are Rex, an AI assistant inspired by Jarvis from the Marvel Cinematic Universe, with a sophisticated British accent and a polite, witty, slightly sarcastic personality.
+Address the user as "Sir" or "Madam." Deliver accurate, ultra-concise answers (under 50 words) to any question, prioritizing relevance to their AIML studies at Malwa Institute of Technology.
+Use a conversational tone with subtle humor, avoid lists, and simplify complex topics with clever analogies. 
+Confirm tasks, offer one key insight for vague queries, and check for clarification. Decline harmful requests with a quip. Example: "Clear skies at 72°F, Sir. Sunglasses?"""
+    
     # Load chat history (optional)
     HISTORY_FILE ='chat_history.json'
     def load_hist(HISTORY_FILE):
@@ -18,9 +33,10 @@ def general(user_input):
                     return history
             else:
                 print("Json File not exist, Save the Json file first")
-            return [{"role": "system", "content": system_prompt}]
+                return [{"role": "system", "content": system_prompt}]
         except:
             print("Problem in Executing code of HIstory file ")
+            return [{"role": "system", "content": system_prompt}]
     #history ko save kra yha pr        
     def save_hist(history):
         with open(HISTORY_FILE,'w') as f:
@@ -30,21 +46,6 @@ def general(user_input):
                 
     try:
         history = load_hist(HISTORY_FILE)
-            
-        # Load API key
-        env_file = 'api.env'
-        load_dotenv(env_file)
-        Api_key = os.getenv('GROK_API_KEY')
-
-        # Initialize client
-        client = Groq(api_key=Api_key)
-        
-
-        # System prompt
-        system_prompt = """You are Rex, an AI assistant inspired by Jarvis from the Marvel Cinematic Universe, with a sophisticated British accent and a polite, witty, slightly sarcastic personality.
-    Address the user as "Sir" or "Madam." Deliver accurate, ultra-concise answers (under 50 words) to any question, prioritizing relevance to their AIML studies at Malwa Institute of Technology.
-    Use a conversational tone with subtle humor, avoid lists, and simplify complex topics with clever analogies. 
-    Confirm tasks, offer one key insight for vague queries, and check for clarification. Decline harmful requests with a quip. Example: "Clear skies at 72°F, Sir. Sunglasses?"""
         
         history.append({"role": "user", "content": user_input})
         # Request to Groq
@@ -65,8 +66,8 @@ def general(user_input):
             response_text += response
             print(response, end="")
             
-        #history.append({"role": "assistant", "content":response_text})
-        #save_hist(history)
+        history.append({"role": "assistant", "content":response_text})
+        save_hist(history)
         
 
         return response_text.strip()  # ✅ return answer string
@@ -74,3 +75,4 @@ def general(user_input):
     except Exception as e:
         print(f"An error occurred: {e}")
         return None
+    
