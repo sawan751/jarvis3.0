@@ -1,5 +1,7 @@
 # brain.py
 from general_q import general
+from realtime_q import realtime
+from systemq import handle_system_query
 
 def classify_query(text):
     """
@@ -11,9 +13,9 @@ def classify_query(text):
 
     # System keywords - related to system operations
     system_keywords = [
-        'open', 'close', 'modify', 'volume', 'shutdown', 'restart', 'start', 'stop',
+        'open', 'close','play', 'modify', 'volume', 'shutdown', 'restart', 'start', 'stop',
         'launch', 'run', 'execute', 'file', 'folder', 'directory', 'window',
-        'application', 'program', 'browser', 'settings', 'control'
+        'application', 'program', 'browser', 'settings', 'control','search'
     ]
 
     # Realtime keywords - require live data
@@ -77,16 +79,20 @@ def brainQ(text):
                 # Handle classification
                 if "system" in response:
                     print(f"\n🔹 System task detected: {query}")
-                    # TODO: Call system handler here
-                    results.append(f"System task: {query}")
+                    result = handle_system_query(query)
+                    results.append(result)
                 elif "general" in response:
                     print(f"\n🔹 General query detected: {query}")
                     result = general(query)
                     results.append(result)
                 elif "realtime" in response:
                     print(f"\n🔹 Realtime query detected: {query}")
-                    result = general(query)  # Assuming realtime uses general for now
-                    results.append(result)
+                    result = realtime(query)
+                    if result:
+                        results.append(result)
+                    else:
+                        result = general(query)
+                        results.append(result)
                 else:
                     results.append(f"Unknown query: {query}")
             
@@ -98,14 +104,17 @@ def brainQ(text):
             # Handle classification
             if "system" in response:
                 print("\n🔹 System task detected")
-                # TODO: Call system handler here
-                return f"System task: {text}"
+                return handle_system_query(text)
             elif "general" in response:
                 print("\n🔹 General query detected")
                 return general(text)
             elif "realtime" in response:
                 print("\n🔹 Realtime query detected")
-                return general(text)
+                result = realtime(text)
+                if result:
+                    return result
+                else:
+                    return general(text)
             else:
                 return f"Unknown query: {text}"
 

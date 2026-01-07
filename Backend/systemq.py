@@ -32,10 +32,11 @@
 # - Control panel
 # - System settings
 # - Browser settings
+# - Search in browser
 #
 # Note: These queries are detected using keywords like: open, close, modify, volume, shutdown,
 # restart, start, stop, launch, run, execute, file, folder, directory, window, application,
-# program, browser, settings, control
+# program, browser, settings, control, search
 
 from system import app_control, volume_control, file_control, system_control, window_control
 
@@ -53,6 +54,9 @@ def handle_system_query(query):
         else:
             app = query_lower.replace("open", "").strip()
         result = app_control.open_application(app)
+    elif "play" in query_lower:
+        query_part = query_lower.replace("play", "").strip()
+        result = app_control.open_application(f"play {query_part}")
     elif "close" in query_lower and "application" in query_lower:
         app = query_lower.replace("close application", "").strip()
         result = app_control.close_application(app)
@@ -99,7 +103,26 @@ def handle_system_query(query):
     # Window control
     elif "close window" in query_lower:
         window_title = query_lower.replace("close window", "").strip()
-        result = window_control.close_window(window_title)
+        if window_title:
+            result = window_control.close_window(window_title)
+        else:
+            result = window_control.close_current_window()
+    elif "close" in query_lower and "tab" in query_lower:
+        result = window_control.close_current_tab()
+    elif "minimize window" in query_lower:
+        window_title = query_lower.replace("minimize window", "").strip()
+        result = window_control.minimize_window(window_title)
+    elif "maximize window" in query_lower:
+        window_title = query_lower.replace("maximize window", "").strip()
+        result = window_control.maximize_window(window_title)
+
+    # Search control
+    elif "search" in query_lower:
+        if "about" in query_lower:
+            search_term = query_lower.replace("search about", "").strip()
+        else:
+            search_term = query_lower.replace("search", "").strip()
+        result = app_control.open_browser_with_search(search_term)
 
     else:
         result = f"System query not recognized: {query}"
