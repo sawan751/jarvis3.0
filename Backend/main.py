@@ -2,6 +2,8 @@ import speech_recognition as sr
 import pyttsx3
 import winsound
 from brain import brainQ
+import os
+from pathlib import Path
 def play_listen_sound():
     winsound.Beep(1300,150)
 def listen():
@@ -32,18 +34,24 @@ def listen():
 
 
 def speak(text):
-    engine = pyttsx3.init()
-    engine.setProperty('rate', 180)
-    engine.setProperty('volume',1.0)
-    voices  = engine.getProperty("voices")
-    engine.setProperty("voice",voices[0].id)
-    engine.say(text)
-    engine.runAndWait()
+
+    try:
+        engine = pyttsx3.init()
+        engine.setProperty('rate', 180)
+        engine.setProperty('volume', 1.0)
+        voices = engine.getProperty("voices")
+        engine.setProperty("voice", voices[1].id)  # 0 for male, 1 for female
+        engine.say(text)
+        engine.runAndWait()
+    except Exception as e:
+        print(f"Local TTS Error: {e}")
+
+
 if __name__ == "__main__":
     speak("Your rex voice assistant activated")
     while True:
         quary = listen()
-        #quary = listen().strip()   
+        #quary = listen().strip()   # isse kuch ni hore bee 
         if quary: 
             if quary.lower().strip() in ["exit" ,"bye","goodbye"]:
                 speak("Good bye, sir")
