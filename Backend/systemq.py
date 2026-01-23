@@ -4,41 +4,42 @@
 #
 # Application Control:
 # - Open browser
-# - Close application
-# - Launch program
-# - Start/stop application
-# - Run executable
+# - Close application done 
+# - Launch program aada hua
+# - Start/stop application not complete yet
+# - Run executable pta nhi 
 #
-# File and Folder Operations:
+# File and Folder Operations: ye sb complete
 # - Open file
 # - Modify file
 # - Create folder
 # - Delete directory
 #
-# System Control:
+# System Control: ye bhi sb complete
 # - Shutdown computer
 # - Restart system
 # - Increase volume
 # - Decrease volume
 # - Adjust settings
 #
-# Window Management:
+# Window Management: ye bhi sb complete bs 2 and 3 me dikkat
 # - Close window
 # - Minimize window
 # - Maximize window
 #
-# Other System Tasks:
+# Other System Tasks: 
 # - Execute command
-# - Control panel
-# - System settings
+# - Control panel done 
+# - System settings 
 # - Browser settings
 # - Search in browser
+# - Search in files with regex
 #
 # Note: These queries are detected using keywords like: open, close, modify, volume, shutdown,
 # restart, start, stop, launch, run, execute, file, folder, directory, window, application,
 # program, browser, settings, control, search
 
-from system import app_control, volume_control, file_control, system_control, window_control
+from system import app_control, volume_control, file_control, system_control, window_control, search_control
 
 def handle_system_query(query):
     """
@@ -68,8 +69,12 @@ def handle_system_query(query):
     elif "volume" in query_lower:
         if "increase" in query_lower:
             result = volume_control.increase_volume()
+            
         elif "decrease" in query_lower:
             result = volume_control.decrease_volume()
+        elif "what" in query_lower or "show" in query_lower:
+            result = volume_control._get_current_volume_percent()
+            
         else:
             level = 50  # default
             result = volume_control.set_volume(level)
@@ -101,13 +106,13 @@ def handle_system_query(query):
         result = system_control.open_settings()
 
     # Window control
-    elif "close window" in query_lower:
+    elif "close window" in query_lower or "close current window" in query_lower:
         window_title = query_lower.replace("close window", "").strip()
         if window_title:
             result = window_control.close_window(window_title)
         else:
             result = window_control.close_current_window()
-    elif "close" in query_lower and "tab" in query_lower:
+    elif "close current tab" in query_lower or ("close" in query_lower and "tab" in query_lower):
         result = window_control.close_current_tab()
     elif "minimize window" in query_lower:
         window_title = query_lower.replace("minimize window", "").strip()
@@ -120,9 +125,16 @@ def handle_system_query(query):
     elif "search" in query_lower:
         if "about" in query_lower:
             search_term = query_lower.replace("search about", "").strip()
+            result = app_control.open_browser_with_search(search_term)
+        elif "in" in query_lower and "files" in query_lower:
+            # Regex search in files
+            parts = query_lower.replace("search", "").replace("in files", "").strip()
+            pattern = parts.strip()
+            result = search_control.search_with_regex(pattern)
         else:
+            # Default to web search
             search_term = query_lower.replace("search", "").strip()
-        result = app_control.open_browser_with_search(search_term)
+            result = app_control.open_browser_with_search(search_term)
 
     else:
         result = f"System query not recognized: {query}"
