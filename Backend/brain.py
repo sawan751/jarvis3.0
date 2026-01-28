@@ -1,7 +1,7 @@
 # brain.py
-from general_q import general
-from realtime_q import realtime
-from systemq import handle_system_query
+from Backend.general_q import general
+from Backend.realtime_q import realtime
+from Backend.systemq import handle_system_query
 
 def classify_query(text):
     """

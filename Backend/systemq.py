@@ -39,7 +39,7 @@
 # restart, start, stop, launch, run, execute, file, folder, directory, window, application,
 # program, browser, settings, control, search
 
-from system import app_control, volume_control, file_control, system_control, window_control, search_control
+from Backend.system import app_control, volume_control, file_control, system_control, window_control, search_control
 
 def handle_system_query(query):
     """

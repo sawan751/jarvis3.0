@@ -9,3 +9,8 @@ numpy
 pydub
 sounddevice
 nltk
+yfinance
+newsapi-python
+youtube-search-python
+google-cloud-texttospeech
+PyQt6>=6.6
