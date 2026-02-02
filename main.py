@@ -4,6 +4,19 @@ import winsound
 from Backend import brain
 import os
 from pathlib import Path
+import pyttsx3
+import soundfile as sf
+import sounddevice as sd
+import os
+import sounddevice as sd
+import soundfile as sf
+from elevenlabs import ElevenLabs
+from dotenv import load_dotenv
+env_file = 'api.env'
+load_dotenv(env_file)
+
+
+
 
 # Voice GUI controls (safe fallbacks if GUI unavailable)
 try:
@@ -52,18 +65,47 @@ def listen():
     return text
 
 
+
+api_key = os.getenv("ELEVENLABS_API_KEY")
+client = ElevenLabs(api_key=api_key)
 def speak(text):
     try:
+        # ===== PRIMARY: ElevenLabs =====
         set_speaking()
-        engine = pyttsx3.init()
-        engine.setProperty('rate', 180)
-        engine.setProperty('volume', 1.0)
-        voices = engine.getProperty("voices")
-        engine.setProperty("voice", voices[0].id)  # 0 for male, 1 for female
+        audio_stream = client.text_to_speech.convert(
+            text=text,
+            voice_id="21m00Tcm4TlvDq8ikWAM",   # Rachel
+            model_id="eleven_multilingual_v2"
+        )
+
+        # Collect streamed audio
+        audio_bytes = b"".join(chunk for chunk in audio_stream)
+
+        # Save and play
+        with open("output.wav", "wb") as f:
+            f.write(audio_bytes)
+
+        data, samplerate = sf.read("output.wav")
+        sd.play(data, samplerate)
+        sd.wait()
+
+    except Exception as e:
+        # ===== FALLBACK: Windows SAPI =====
+        print("ElevenLabs failed, switching to pyttsx3:", e)
+        set_speaking() 
+        engine = pyttsx3.init("sapi5")
+        engine.setProperty("rate", 165)
+        engine.setProperty("volume", 1.0)
+
+        # Optional: pick best available voice
+        for v in engine.getProperty("voices"):
+            if "zira" in v.name.lower():
+                engine.setProperty("voice", v.id)
+                break
+
         engine.say(text)
         engine.runAndWait()
-    except Exception as e:
-        print(f"Local TTS Error: {e}")
+
     finally:
         set_idle()
 

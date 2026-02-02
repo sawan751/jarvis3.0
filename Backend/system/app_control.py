@@ -32,7 +32,7 @@ def open_application(app_name):
                     webbrowser.open(search_url)
                     return f"Error searching, opened search for '{query}' on YouTube: {str(e)}"
             
-            # Map common app names to executables
+            # Map common app names to executables or URLs
             app_map = {
                 "browser": "msedge",
                 "chrome": "chrome",
@@ -50,13 +50,20 @@ def open_application(app_name):
                 "settings": "control",
                 "vscode": "code",
                 "visual studio code": "code",
-                "whatsapp": "whatsapp",
+                "whatsapp": "https://web.whatsapp.com",  # Fallback to web if desktop not found
+                "instagram": "https://www.instagram.com",
+                "telegram": "https://web.telegram.org",
+                "youtube": "https://www.youtube.com",
                 "anti gravity": "antigravity",
             }
             if app_name.lower() in app_map:
                 exe = app_map[app_name.lower()]
-                os.system(f"start {exe}")
-                return f"Opened {app_name}"
+                if exe.startswith("http"):
+                    webbrowser.open(exe)
+                    return f"Opened {app_name} in browser"
+                else:
+                    os.system(f"start {exe}")
+                    return f"Opened {app_name}"
             else:
                 # Try to open as executable
                 subprocess.run([app_name], shell=True)
@@ -73,7 +80,7 @@ def close_application(app_name):
     """
     try:
         if platform.system() == "Windows":
-            # Map common app names to executables
+            # Map common app names to executables or URLs
             app_map = {
                 "browser": "msedge",
                 "chrome": "chrome",
@@ -91,7 +98,10 @@ def close_application(app_name):
                 "settings": "control",
                 "vscode": "code",
                 "visual studio code": "code",
-                "whatsapp": "whatsapp",
+                "whatsapp": "https://web.whatsapp.com",  # Fallback to web if desktop not found
+                "instagram": "https://www.instagram.com",
+                "telegram": "https://web.telegram.org",
+                "youtube": "https://www.youtube.com",
                 "anti gravity": "antigravity",
             }
             if app_name.lower() in app_map:
@@ -111,7 +121,7 @@ def launch_program(program_path):
     Launches a program from a given path or name.
     """
     try:
-        # Map common app names to executables
+        # Map common app names to executables or URLs
         app_map = {
             "browser": "msedge",
             "chrome": "chrome",
@@ -129,13 +139,20 @@ def launch_program(program_path):
             "settings": "control",
             "vscode": "code",
             "visual studio code": "code",
-            "whatsapp": "whatsapp",
+            "whatsapp": "https://web.whatsapp.com",  # Fallback to web if desktop not found
+            "instagram": "https://www.instagram.com",
+            "telegram": "https://web.telegram.org",
+            "youtube": "https://www.youtube.com",
             "anti gravity": "antigravity",
         }
         if program_path.lower() in app_map:
             exe = app_map[program_path.lower()]
-            os.system(f"start {exe}")
-            return f"Launched {program_path}"
+            if exe.startswith("http"):
+                webbrowser.open(exe)
+                return f"Launched {program_path} in browser"
+            else:
+                os.system(f"start {exe}")
+                return f"Launched {program_path}"
         else:
             os.startfile(program_path)
             return f"Launched {program_path}"

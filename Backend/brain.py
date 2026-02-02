@@ -15,7 +15,7 @@ def classify_query(text):
     system_keywords = [
         'open', 'close','play', 'modify', 'volume', 'shutdown', 'restart', 'start', 'stop',
         'launch', 'run', 'execute', 'file', 'folder', 'directory', 'window',
-        'application', 'program', 'browser', 'settings', 'control','search'
+        'application', 'program', 'browser', 'settings', 'control','search','minimize','minimise',
     ]
 
     # Realtime keywords - require live data

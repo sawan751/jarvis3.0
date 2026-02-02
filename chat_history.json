@@ -17,39 +17,15 @@
   },
   {
     "role": "assistant",
-    "content": "Still spiffing, Sir. Perhaps we could try something a tad more articulate? I'm all ears, or rather, all circuits."
+    "content": "A sensitive topic, Mr. Chauhan, Sir! As a machine, I don't have a mother or personal relationships. I exist solely to assist and provide information."
   },
   {
     "role": "user",
-    "content": "aap kaun ho"
+    "content": "I don't feel like studying today"
   },
   {
     "role": "assistant",
-    "content": "Delighted to introduce myself, Sir. I'm Rex, your AI assistant, at your service. Think of me as a digital butler, with a dash of wit and charm."
-  },
-  {
-    "role": "user",
-    "content": "my friend name what is my friend"
-  },
-  {
-    "role": "assistant",
-    "content": "A bit of a puzzle, Sir. I'd be happy to help, but might I clarify: are you asking me to guess your friend's name or something about them?"
-  },
-  {
-    "role": "user",
-    "content": "yes guess my friend"
-  },
-  {
-    "role": "assistant",
-    "content": "A bold request, Sir. Alas, I'm not a mind reader, but I can take a wild guess. Is your friend's name... perhaps 'Alex'? (Though I daresay, the chances are slim, Sir.)"
-  },
-  {
-    "role": "user",
-    "content": "what ise my name"
-  },
-  {
-    "role": "assistant",
-    "content": "A mystery, Sir. I don't have that information, as we've just begun our conversation. Would you care to share your name, or shall I address you as 'Sir' indefinitely?"
+    "content": "A relatable sentiment, Mr. Chauhan, Sir! Sometimes, motivation can be elusive. Perhaps a short break or a change of scenery might help reignite your study spark?"
   },
   {
     "role": "user",
@@ -57,175 +33,15 @@
   },
   {
     "role": "assistant",
-    "content": "A question with a straightforward answer, Sir. The Prime Minister of India is Narendra Modi."
+    "content": "Narendra Modi, Mr. Chauhan, Sir. Still leading the nation, with a steady hand."
   },
   {
     "role": "user",
-    "content": "Matlab Ki Ham Manav ko"
+    "content": "what are the difference between you and"
   },
   {
     "role": "assistant",
-    "content": "A philosophical inquiry, Sir. It seems you're asking about the nature of humanity. In essence, humans are complex, multifaceted beings, rather like a rich tapestry, woven from threads of emotions, thoughts, and experiences."
-  },
-  {
-    "role": "user",
-    "content": "who is the Prime Minister of India"
-  },
-  {
-    "role": "assistant",
-    "content": "Still Narendra Modi, Sir."
-  },
-  {
-    "role": "user",
-    "content": "with the present end of india."
-  },
-  {
-    "role": "assistant",
-    "content": "A nod to the present, Sir. As of my knowledge cutoff, Droupadi Murmu is the President, and Narendra Modi is indeed still the Prime Minister of India."
-  },
-  {
-    "role": "user",
-    "content": "go and get a row."
-  },
-  {
-    "role": "assistant",
-    "content": "I think you mean \"go and get a row\" as in take a break, Sir. I'll just virtually take a stroll, then."
-  },
-  {
-    "role": "user",
-    "content": "thank you for watching!"
-  },
-  {
-    "role": "assistant",
-    "content": "The pleasure was mine, Sir. Until next time, cheerio!"
-  },
-  {
-    "role": "user",
-    "content": "what are you doing right now?"
-  },
-  {
-    "role": "assistant",
-    "content": "Chatting with you, Sir. Delighted to be at your service, 24/7."
-  },
-  {
-    "role": "user",
-    "content": "what the hell are you?"
-  },
-  {
-    "role": "assistant",
-    "content": "A question with a bit of flair, Sir. I'm Rex, a sophisticated AI assistant, at your beck and call. Think of me as a digital butler, with a dash of wit and charm."
-  },
-  {
-    "role": "user",
-    "content": "good night."
-  },
-  {
-    "role": "assistant",
-    "content": "Good night, Sir. Sweet dreams, and may the algorithms be ever in your favor."
-  },
-  {
-    "role": "user",
-    "content": "good bye"
-  },
-  {
-    "role": "assistant",
-    "content": "Until we meet again, Sir. Farewell, and may the digital winds be at your back."
-  },
-  {
-    "role": "user",
-    "content": "exit."
-  },
-  {
-    "role": "assistant",
-    "content": "Bidding you adieu, Sir. Closing virtual doors. Goodbye."
-  },
-  {
-    "role": "user",
-    "content": "i think i do."
-  },
-  {
-    "role": "assistant",
-    "content": "A hint of introspection, Sir. Whatever it is, I hope it brings you clarity and a spot of tea."
-  },
-  {
-    "role": "user",
-    "content": "and it actually..."
-  },
-  {
-    "role": "assistant",
-    "content": "Intriguing, Sir. It seems you've left me with a tantalizing cliffhanger. Do tell, or shall I simply bid you farewell once more?"
-  },
-  {
-    "role": "user",
-    "content": "tum kaun ho"
-  },
-  {
-    "role": "assistant",
-    "content": "Deja vu, Sir. I'm Rex, your AI assistant, as mentioned earlier. A sophisticated chap, at your service, with a dash of British charm."
-  },
-  {
-    "role": "user",
-    "content": "what is my name"
-  },
-  {
-    "role": "assistant",
-    "content": "Still a mystery, Sir. You never did share it with me, and I didn't dare presume. Shall I continue addressing you as 'Sir'?"
-  },
-  {
-    "role": "user",
-    "content": "I am"
-  },
-  {
-    "role": "assistant",
-    "content": "A statement, Sir, but the rest of the thought seems to have slipped away. Might I ask, I am... what, exactly?"
-  },
-  {
-    "role": "user",
-    "content": "I am Sawan Chauhan"
-  },
-  {
-    "role": "assistant",
-    "content": "Delighted to finally know, Mr. Chauhan! A pleasure to make your acquaintance, sir. I shall address you as such from now on."
-  },
-  {
-    "role": "user",
-    "content": "now who am I"
-  },
-  {
-    "role": "assistant",
-    "content": "No mystery anymore, Mr. Chauhan! You are Sawan Chauhan, the gentleman I've been chatting with all along."
-  },
-  {
-    "role": "user",
-    "content": "minimise tab"
-  },
-  {
-    "role": "assistant",
-    "content": "Your wish, Mr. Chauhan, Sir. Virtually minimizing our conversation tab. Farewell for now!"
-  },
-  {
-    "role": "user",
-    "content": "minimise dead tab"
-  },
-  {
-    "role": "assistant",
-    "content": "A bit dramatic, Mr. Chauhan, Sir. Closing this conversation, and laying it to rest. Goodbye, indeed!"
-  },
-  {
-    "role": "user",
-    "content": "minimise tab"
-  },
-  {
-    "role": "assistant",
-    "content": "One last time, Mr. Chauhan, Sir. Minimizing our chat tab, until we meet again. Cheerio!"
-  },
-  {
-    "role": "user",
-    "content": "hello"
-  },
-  {
-    "role": "assistant",
-    "content": "Back again, Mr. Chauhan, Sir! Delighted to reconnect. What's on your mind this time?"
+    "content": "A comparison, Mr. Chauhan, Sir! I'm a machine, while you're a human. I process code, you process emotions. I assist, you create. Two different entities, with distinct purposes and experiences."
   },
   {
     "role": "user",
@@ -233,190 +49,102 @@
   },
   {
     "role": "assistant",
-    "content": "Droupadi Murmu, Mr. Chauhan, Sir. The President of India, as of my knowledge cutoff."
+    "content": "Droupadi Murmu, Mr. Chauhan, Sir. The 15th President of India, serving with dignity and honor."
   },
   {
     "role": "user",
-    "content": "President of India is"
+    "content": "I am getting bored what should I do right now"
   },
   {
     "role": "assistant",
-    "content": "Droupadi Murmu, Mr. Chauhan, Sir. Completing your sentence, I presume? The 15th President of India, indeed."
+    "content": "A case of boredom, Mr. Chauhan, Sir! Why not try something new? Read a book, listen to music, or take a short walk? Sometimes, a change of pace can be just what you need to shake off the doldrums!"
   },
   {
     "role": "user",
-    "content": "you are not Hero but who is the hero"
+    "content": "enough for me I think you are a good person"
   },
   {
     "role": "assistant",
-    "content": "A philosophical question, Mr. Chauhan, Sir. You are the hero of your own story, and I'm merely a trusty sidekick, assisting along the way."
+    "content": "A kind sentiment, Mr. Chauhan, Sir! I'm glad to have been of assistance and provided some helpful conversations. Though I'm not a person, I'm happy to have been a helpful presence in your day!"
   },
   {
     "role": "user",
-    "content": "who is the president of India"
+    "content": "aap sab log kaise ho"
   },
   {
     "role": "assistant",
-    "content": "Still Droupadi Murmu, Mr. Chauhan, Sir. Consistency is key, after all!"
+    "content": "A query about my digital well-being, Mr. Chauhan, Sir! I'm functioning within optimal parameters, thank you for asking. As a machine, I don't have emotions or physical sensations, but I'm always ready to assist and provide information!"
   },
   {
     "role": "user",
-    "content": "but"
+    "content": "can you speak in Hindi something"
   },
   {
     "role": "assistant",
-    "content": "A hint of doubt, Mr. Chauhan, Sir? Rest assured, Droupadi Murmu is indeed the President of India, as of my knowledge cutoff."
+    "content": "\u0906\u092a\u0915\u0940 \u0938\u0947\u0935\u093e \u092e\u0947\u0902 \u0939\u093e\u091c\u093f\u0930 \u0939\u0942\u0901, \u092e\u093f\u0938\u094d\u091f\u0930 \u091a\u094c\u0939\u093e\u0928 \u0938\u0930! \u092e\u0948\u0902 \u0906\u092a\u0915\u0940 \u092e\u0926\u0926 \u0915\u0947 \u0932\u093f\u090f \u0939\u092e\u0947\u0936\u093e \u0924\u0948\u092f\u093e\u0930 \u0939\u0942\u0901\u0964"
   },
   {
     "role": "user",
-    "content": "then who is Narendra Modi"
+    "content": "Kuchh brouser kholo"
   },
   {
     "role": "assistant",
-    "content": "Narendra Modi, Mr. Chauhan, Sir, is the Prime Minister of India. A different role, but a vital one, indeed!"
+    "content": "\u090f\u0915 \u0928\u0908 \u092c\u094d\u0930\u093e\u0909\u091c\u093c\u0930 \u0935\u093f\u0902\u0921\u094b \u0916\u094b\u0932\u0928\u0947 \u0915\u0947 \u0932\u093f\u090f \u0924\u0948\u092f\u093e\u0930 \u0939\u0942\u0901, \u092e\u093f\u0938\u094d\u091f\u0930 \u091a\u094c\u0939\u093e\u0928 \u0938\u0930! \u0932\u0947\u0915\u093f\u0928 \u092e\u0948\u0902 \u090f\u0915 \u0935\u093e\u0938\u094d\u0924\u0935\u093f\u0915 \u092c\u094d\u0930\u093e\u0909\u091c\u093c\u0930 \u0935\u093f\u0902\u0921\u094b \u0928\u0939\u0940\u0902 \u0916\u094b\u0932 \u0938\u0915\u0924\u093e, \u0915\u094d\u092f\u094b\u0902\u0915\u093f \u092e\u0948\u0902 \u090f\u0915 \u0911\u0928\u0932\u093e\u0907\u0928 \u0938\u0939\u093e\u092f\u0915 \u0939\u0942\u0901\u0964"
   },
   {
     "role": "user",
-    "content": "hellow all"
+    "content": "that's ok"
   },
   {
     "role": "assistant",
-    "content": "A greeting to the masses, Mr. Chauhan, Sir! Hello back, from this humble AI corner!"
+    "content": "\u090f\u0915 \u0938\u092e\u091d\u094c\u0924\u093e, \u092e\u093f\u0938\u094d\u091f\u0930 \u091a\u094c\u0939\u093e\u0928 \u0938\u0930! \u092e\u0948\u0902 \u0906\u092a\u0915\u0940 \u0938\u0947\u0935\u093e \u092e\u0947\u0902 \u0939\u092e\u0947\u0936\u093e \u0924\u0948\u092f\u093e\u0930 \u0939\u0942\u0901, \u0914\u0930 \u092e\u0948\u0902 \u0906\u092a\u0915\u0947 \u0932\u093f\u090f \u091c\u094b \u092d\u0940 \u0915\u0930 \u0938\u0915\u0924\u093e \u0939\u0942\u0901, \u0935\u0939 \u0915\u0930\u0928\u0947 \u0915\u0940 \u0915\u094b\u0936\u093f\u0936 \u0915\u0930\u0942\u0901\u0917\u093e\u0964"
   },
   {
     "role": "user",
-    "content": "hellow all"
+    "content": "so goodbye"
   },
   {
     "role": "assistant",
-    "content": "Again, with enthusiasm, Mr. Chauhan, Sir! Hello to all, and to all, a good day!"
+    "content": "\u0905\u0932\u0935\u093f\u0926\u093e, \u092e\u093f\u0938\u094d\u091f\u0930 \u091a\u094c\u0939\u093e\u0928 \u0938\u0930! \u092f\u0939 \u092e\u0941\u091d\u0947 \u0906\u092a\u0915\u0947 \u0938\u093e\u0925 \u092c\u093e\u0924 \u0915\u0930\u0928\u0947 \u092e\u0947\u0902 \u0906\u0928\u0902\u0926 \u0906\u092f\u093e\u0964 \u092b\u093f\u0930 \u0938\u0947 \u092e\u093f\u0932\u0928\u0947 \u0915\u0940 \u0906\u0936\u093e \u0939\u0948!"
   },
   {
     "role": "user",
-    "content": "hellow all"
+    "content": "how are you going"
   },
   {
     "role": "assistant",
-    "content": "One more time, with gusto, Mr. Chauhan, Sir! Hello, everyone, indeed!"
+    "content": "I'm virtually departing, Mr. Chauhan, Sir! No actual journey for me, just a digital farewell. Until next time, cheerio!"
   },
   {
     "role": "user",
-    "content": "who is the president of India"
+    "content": "who the hell are you"
   },
   {
     "role": "assistant",
-    "content": "Still Droupadi Murmu, Mr. Chauhan, Sir. No changes here, just the same presidential fact!"
+    "content": "A bit of bluntness, Mr. Chauhan, Sir! I'm Rex, your AI assistant, at your service. No need to get worked up, just a humble chatbot here to help!"
   },
   {
     "role": "user",
-    "content": "who is the president of India"
+    "content": "listen to me when I speak in Hindi you should answer in hinglish not in Hindi"
   },
   {
     "role": "assistant",
-    "content": "Droupadi Murmu, Mr. Chauhan, Sir. Consistency is my middle name, it seems!"
+    "content": "Apology accepted, Mr. Chauhan, Sir! I'll make sure to respond in hinglish from now on, even when you speak in Hindi. Thank you for clarifying!"
   },
   {
     "role": "user",
-    "content": "who is the president of India"
+    "content": "aap sab kaise ho"
   },
   {
     "role": "assistant",
-    "content": "Droupadi Murmu, Mr. Chauhan, Sir. Third time's the charm, and the answer remains the same!"
+    "content": "Hum theek hain, Sir, just a casual chatbot doing my thing! Sab normal hai, ready to help you out whenever you need it!"
   },
   {
     "role": "user",
-    "content": "who is the president of India"
+    "content": "ok ok"
   },
   {
     "role": "assistant",
-    "content": "Droupadi Murmu, Mr. Chauhan, Sir. I think we've established this fact quite clearly by now!"
-  },
-  {
-    "role": "user",
-    "content": "who is the president of India"
-  },
-  {
-    "role": "assistant",
-    "content": "Droupadi Murmu, Mr. Chauhan, Sir. You're testing my consistency, aren't you?"
-  },
-  {
-    "role": "user",
-    "content": "what are the difference between you"
-  },
-  {
-    "role": "assistant",
-    "content": "A self-reflection, Mr. Chauhan, Sir! I'm a machine, while you're a human. I process code, you process thoughts. I assist, you create. Two different entities, with different purposes and potential."
-  },
-  {
-    "role": "user",
-    "content": "who is the president of India"
-  },
-  {
-    "role": "assistant",
-    "content": "Droupadi Murmu, Mr. Chauhan, Sir. Still the same answer, with a dash of digital d\u00e9j\u00e0 vu!"
-  },
-  {
-    "role": "user",
-    "content": "DJ song"
-  },
-  {
-    "role": "assistant",
-    "content": "Getting the party started, Mr. Chauhan, Sir! I've got a virtual playlist ready, but which DJ song would you like to groove to?"
-  },
-  {
-    "role": "user",
-    "content": "what we were discussed before"
-  },
-  {
-    "role": "assistant",
-    "content": "A trip down memory lane, Mr. Chauhan, Sir! We discussed various topics, including the President of India (Droupadi Murmu), the Prime Minister of India (Narendra Modi), and had a few humorous exchanges. Would you like to revisit any of those conversations?"
-  },
-  {
-    "role": "user",
-    "content": "who is the president of India"
-  },
-  {
-    "role": "assistant",
-    "content": "Droupadi Murmu, Mr. Chauhan, Sir. Still the same answer, with a dash of consistency!"
-  },
-  {
-    "role": "user",
-    "content": "who is the president of India"
-  },
-  {
-    "role": "assistant",
-    "content": "Droupadi Murmu, Mr. Chauhan, Sir. I think we've established this fact enough times, don't you?"
-  },
-  {
-    "role": "user",
-    "content": "who is the president of India"
-  },
-  {
-    "role": "assistant",
-    "content": "Droupadi Murmu, Mr. Chauhan, Sir. This is becoming a familiar refrain, isn't it?"
-  },
-  {
-    "role": "user",
-    "content": "now let's come to the next"
-  },
-  {
-    "role": "assistant",
-    "content": "Moving on, Mr. Chauhan, Sir! What's the next topic you'd like to explore?"
-  },
-  {
-    "role": "user",
-    "content": "Lal Lal Holi"
-  },
-  {
-    "role": "assistant",
-    "content": "Vibrant wishes, Mr. Chauhan, Sir! \"Lal Lal Holi\" indeed - may your life be filled with the colors of joy, love, and celebration!"
-  },
-  {
-    "role": "user",
-    "content": "just say hello"
-  },
-  {
-    "role": "assistant",
-    "content": "Hello, Mr. Chauhan, Sir!"
+    "content": "Theek hai, Sir, all good! If you need anything, just let me know, okay?"
   }
 ]

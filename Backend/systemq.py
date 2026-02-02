@@ -67,14 +67,19 @@ def handle_system_query(query):
 
     # Volume control
     elif "volume" in query_lower:
-        if "increase" in query_lower:
+        import re
+        # Check for specific percentage in the query
+        percent_match = re.search(r'(\d+)%?', query_lower)
+        if percent_match:
+            level = int(percent_match.group(1))
+            result = volume_control.set_volume(level)
+        elif "increase" in query_lower:
             result = volume_control.increase_volume()
-            
         elif "decrease" in query_lower:
             result = volume_control.decrease_volume()
         elif "what" in query_lower or "show" in query_lower:
-            result = volume_control._get_current_volume_percent()
-            
+            current_vol = volume_control._get_current_volume_percent()
+            result = f"Current volume is {current_vol}%"
         else:
             level = 50  # default
             result = volume_control.set_volume(level)
