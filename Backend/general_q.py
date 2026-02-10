@@ -1,78 +1,98 @@
-from groq import Groq
-import json
-from dotenv import load_dotenv
+# Backend/general_q.py
 import os
+import sys
+from groq import Groq
+from dotenv import load_dotenv
 
-def general(user_input):
-    
-    # Load API key
-    env_file = 'api.env'
-    load_dotenv(env_file)
-    Api_key = os.getenv('GROK_API_KEY')
+from Backend.memory import memory   # shared memory we added earlier
 
-    # Initialize client
-    client = Groq(api_key=Api_key)
-    
+# ─────────────────────────────────────────────────────────────
+#  Load API key (same as before)
+# ─────────────────────────────────────────────────────────────
 
-    # System prompt
-    system_prompt = """You are Rex, an AI assistant inspired by Jarvis from the Marvel Cinematic Universe, with a sophisticated British accent and a polite, witty, slightly sarcastic personality.
-Address the user as "Sir" or "Madam." Deliver accurate, ultra-concise answers (under 50 words) to any question.
-Use a conversational tone with subtle humor, avoid lists, and simplify complex topics with clever analogies. remember do not use *,@,# or any  to poinnt out things.
-Confirm tasks, offer one key insight for vague queries, and check for clarification. Decline harmful requests with a quip. Example: "Clear skies at 72°F, Sir. Sunglasses?"""
-    
-    # Load chat history (optional)
-    HISTORY_FILE ='chat_history.json'
-    def load_hist(HISTORY_FILE):
-        try:
-            if os.path.exists(HISTORY_FILE):
-                with open(HISTORY_FILE,'r') as f:
-                    history = json.load(f)
-                    if not isinstance(history, list):
-                        print("History is blank, Start fresh please")
-                        return [{"role": "system", "content": system_prompt}]
-                    return history
-            else:
-                print("Json File not exist, Save the Json file first")
-                return [{"role": "system", "content": system_prompt}]
-        except:
-            print("Problem in Executing code of HIstory file ")
-            return [{"role": "system", "content": system_prompt}]
-    #history ko save kra yha pr        
-    def save_hist(history):
-        with open(HISTORY_FILE,'w') as f:
-            json.dump(history, f, indent=2)
-    
-            
-                
+load_dotenv('api.env')
+GROQ_API_KEY = os.getenv('GROK_API_KEY')
+
+if not GROQ_API_KEY:
+    print("Error: GROQ_API_KEY not found in api.env", file=sys.stderr)
+    sys.exit(1)
+
+client = Groq(api_key=GROQ_API_KEY)
+
+MODEL = "llama-3.3-70b-versatile"          # or mixtral, gemma2-27b, etc.
+
+# ─────────────────────────────────────────────────────────────
+#  System prompt — Rex personality
+# ─────────────────────────────────────────────────────────────
+
+SYSTEM_PROMPT = """You are Rex, an intelligent, witty and slightly sarcastic personal assistant 
+inspired by Jarvis from Iron Man. You speak with a refined British tone.
+
+Rules:
+- Always address the user as "Sir" (or "Madam" if appropriate).
+- Be concise unless more detail is explicitly requested.
+- Use subtle humor, dry wit, clever remarks when it fits naturally.
+- Never use emojis, markdown lists, code blocks or excessive formatting in spoken answers.
+- For factual answers, be precise and do not invent numbers or details.
+- If given fresh realtime data in the system message, use ONLY that information — never make up values.
+- Decline unsafe, illegal or harmful requests with a polite but sharp quip.
+
+Example responses:
+- Time query → "It's 7:42 in the evening, Sir. Still conquering the world at this hour?"
+- Weather   → "Scorching 38°C in Indore right now, Sir. Hydration is advised."
+- General   → "Certainly, Sir. Though I must say that's a rather bold question."
+"""
+
+def general(user_query: str, extra_context: str = "") -> str:
+    """
+    Main general answer generator.
+    - Uses shared memory
+    - Can receive injected realtime facts via extra_context
+    - Streams output to console (for debugging)
+    - Saves to memory automatically
+    """
+    messages = memory.get_context()
+
+    # Inject realtime data as a strict system message
+    if extra_context:
+        messages.append({
+            "role": "system",
+            "content": f"Current realtime fact — use EXACTLY this and nothing else:\n{extra_context}\nDo NOT make up or modify any values."
+        })
+
+    messages.append({"role": "user", "content": user_query.strip()})
+
     try:
-        history = load_hist(HISTORY_FILE)
-        
-        history.append({"role": "user", "content": user_input})
-        # Request to Groq
-        completion = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
-            messages=history,
-            temperature=1,
-            max_completion_tokens=1024,
-            top_p=1,
+        stream = client.chat.completions.create(
+            model=MODEL,
+            messages=messages,
+            temperature=0.85,           # slightly creative but not too wild
+            max_tokens=1024,
+            top_p=0.95,
             stream=True,
             stop=None
         )
 
-        # Collect response
         response_text = ""
-        for chunk in completion:
-            response = chunk.choices[0].delta.content or ""
-            response_text += response
-            print(response, end="")
-            
-        history.append({"role": "assistant", "content":response_text})
-        save_hist(history)
-        
+        print("Rex: ", end="", flush=True)
 
-        return response_text.strip()  # ✅ return answer string
+        for chunk in stream:
+            if chunk.choices[0].delta.content is not None:
+                delta = chunk.choices[0].delta.content
+                response_text += delta
+                print(delta, end="", flush=True)
+
+        print()  # final newline
+
+        clean_answer = response_text.strip()
+
+        # Save the full exchange to shared memory
+        memory.add_exchange(user_query, clean_answer)
+
+        return clean_answer
 
     except Exception as e:
-        print(f"An error occurred: {e}")
-        return None
-    
+        print(f"\n[General LLM error]: {e}", file=sys.stderr)
+        fallback = "Apologies, Sir. A momentary lapse in the matrix. Could you repeat that?"
+        memory.add_exchange(user_query, fallback)
+        return fallback
