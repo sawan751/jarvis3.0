@@ -52,7 +52,7 @@ Still needs improvement in:
 
 1. Clone the repo
    ```bash
-   git clone https://github.com/sawan751/rex-voice-assistant.git
+   git clone https://github.com/sawan751/jarvis3.0.git
    cd rex-voice-assistant
 
 Install dependencies
