@@ -1,123 +1,168 @@
 # brain.py
-from general_q import general
-from realtime_q import realtime
-from systemq import handle_system_query
+import os
+import json
+import logging
+from typing import Optional, Dict, Tuple
+from groq import Groq
+from dotenv import load_dotenv
 
-def classify_query(text):
-    """
-    Fast keyword-based classification of queries into system, realtime, or general.
-    Returns a list of matching categories ordered by priority.
-    """
-    text_lower = text.lower()
-    matches = []
+# Import your existing handlers
+from Backend.general_q import general
+from Backend.realtime_q import *
+from Backend.systemq import handle_system_query
+from Backend.memory import memory
 
-    # System keywords - related to system operations
-    system_keywords = [
-        'open', 'close','play', 'modify', 'volume', 'shutdown', 'restart', 'start', 'stop',
-        'launch', 'run', 'execute', 'file', 'folder', 'directory', 'window',
-        'application', 'program', 'browser', 'settings', 'control','search'
-    ]
+# ────────────────────────────────────────────────
+#  Config & Setup
+# ────────────────────────────────────────────────
 
-    # Realtime keywords - require live data
-    realtime_keywords = [
-        'time', 'date', 'weather', 'temperature', 'forecast', 'stock', 'price',
-        'news', 'current', 'now', 'today', 'tomorrow', 'yesterday', 'live',
-        'update', 'latest', 'real-time', 'clock', 'calendar', 'schedule'
-    ]
+load_dotenv('api.env')
+GROQ_API_KEY = os.getenv('GROK_API_KEY')
 
-    # Question indicators - suggest general queries
-    question_indicators = [
-        'what', 'how', 'why', 'when', 'where', 'who', 'tell me', 'explain',
-        'about', 'is', 'are', 'do', 'does', 'can', 'could', 'would', 'should'
-    ]
+if not GROQ_API_KEY:
+    raise ValueError("GROQ_API_KEY not found in api.env")
 
-    # Check for system keywords
-    has_system = any(keyword in text_lower for keyword in system_keywords)
-    if has_system:
-        matches.append("system")
+client = Groq(api_key=GROQ_API_KEY)
 
-    # Check for realtime keywords
-    has_realtime = any(keyword in text_lower for keyword in realtime_keywords)
-    if has_realtime:
-        matches.append("realtime")
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
-    # Check for general questions (if not already classified as realtime)
-    has_questions = any(indicator in text_lower for indicator in question_indicators)
-    if has_questions and not has_realtime:
-        matches.append("general")
+MODEL = "llama-3.3-70b-versatile"   # same as in general_q.py
 
-    # If no specific keywords found, default to general
-    if not matches:
-        matches.append("general")
+# ────────────────────────────────────────────────
+#  Classification Prompt (strict JSON output)
+# ────────────────────────────────────────────────
 
-    return matches
+CLASSIFY_PROMPT = """You are a precise query classifier for a voice assistant named Rex.
 
-def brainQ(text):
+Given the user's spoken query, respond **ONLY** with valid JSON (nothing else).
+
+Required fields:
+{{
+  "category":    one of "system", "realtime", "general",
+  "normalized":  short, clear English command optimized for the handler (max 12 words),
+  "confidence":  number 0.0–1.0 how sure you are,
+  "language":    detected language code ("en", "hi", etc.)
+}}
+
+Rules:
+- "system"    → anything that controls computer/apps/files/volume/windows/settings/execute/open/close/play/launch/delete/shutdown/...
+- "realtime"  → time, date, weather, stock price, news, current/now/live/today/...
+- "general"   → everything else: questions, explanations, jokes, stories, math, opinions, chit-chat
+
+Examples:
+User: "open chrome"
+→ {{"category":"system", "normalized":"open chrome", "confidence":0.98, "language":"en"}}
+
+User: "what is the time now"
+→ {{"category":"realtime", "normalized":"what is the current time", "confidence":0.99, "language":"en"}}
+
+User: "band karo spotify"
+→ {{"category":"system", "normalized":"close spotify", "confidence":0.92, "language":"hi"}}
+
+User: "who is iron man"
+→ {{"category":"general", "normalized":"who is iron man", "confidence":0.97, "language":"en"}}
+
+User query: {{query}}
+"""
+
+# ────────────────────────────────────────────────
+#  Core Classification Function
+# ────────────────────────────────────────────────
+
+def classify_with_groq(query: str) -> Optional[Dict]:
+    """Call Groq → strict JSON classification"""
     try:
-        # First, check if the whole text contains system keywords
-        whole_response = classify_query(text)
-        has_system = "system" in whole_response
-        
-        if has_system:
-            # Split the input text into multiple queries based on delimiters
-            delimiters = [' and ', ' then ', '. ', '! ', '? ']
-            queries = [text]
-            for delimiter in delimiters:
-                new_queries = []
-                for q in queries:
-                    new_queries.extend(q.split(delimiter))
-                queries = new_queries
-            
-            # Remove empty strings and strip whitespace
-            queries = [q.strip() for q in queries if q.strip()]
-            
-            results = []
-            for query in queries:
-                # Use fast keyword-based classification for each query
-                response = classify_query(query)
-                
-                # Handle classification
-                if "system" in response:
-                    print(f"\n🔹 System task detected: {query}")
-                    result = handle_system_query(query)
-                    results.append(result)
-                elif "general" in response:
-                    print(f"\n🔹 General query detected: {query}")
-                    result = general(query)
-                    results.append(result)
-                elif "realtime" in response:
-                    print(f"\n🔹 Realtime query detected: {query}")
-                    result = realtime(query)
-                    if result:
-                        results.append(result)
-                    else:
-                        result = general(query)
-                        results.append(result)
-                else:
-                    results.append(f"Unknown query: {query}")
-            
-            return "\n".join(results)  # Join results into a single string for speaking
-        else:
-            # Treat as single query
-            response = whole_response
-            
-            # Handle classification
-            if "system" in response:
-                print("\n🔹 System task detected")
-                return handle_system_query(text)
-            elif "general" in response:
-                print("\n🔹 General query detected")
-                return general(text)
-            elif "realtime" in response:
-                print("\n🔹 Realtime query detected")
-                result = realtime(text)
-                if result:
-                    return result
-                else:
-                    return general(text)
+        prompt = CLASSIFY_PROMPT.replace("{{query}}", query.strip())
+
+        completion = client.chat.completions.create(
+            model=MODEL,
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.1,                # low randomness for classification
+            max_tokens=256,
+            top_p=0.95,
+            stream=False
+        )
+
+        content = completion.choices[0].message.content.strip()
+
+        # Try to parse JSON
+        print(content)
+        try:
+            result = json.loads(content)
+        except json.JSONDecodeError:
+            # Sometimes model adds markdown or extra text → try to extract { ... }
+            start = content.find('{')
+            end = content.rfind('}') + 1
+            if start >= 0 and end > start:
+                cleaned = content[start:end]
+                result = json.loads(cleaned)
             else:
-                return f"Unknown query: {text}"
+                logger.warning(f"Could not parse JSON from: {content}")
+                return None
+        print(result)
+        # Basic validation
+        required = {"category", "normalized", "confidence"}
+        if not all(k in result for k in required):
+            return None
+
+        category = result["category"].lower()
+        if category not in {"system", "realtime", "general"}:
+            return None
+
+        return result
 
     except Exception as e:
-        print(f"An error occurred: {e}")
+        logger.exception("Groq classification failed")
         return None
+
+
+# ────────────────────────────────────────────────
+#  Public brain entry point (what main.py calls)
+# ────────────────────────────────────────────────
+
+def brainQ(user_input: str) -> str:
+    if not user_input or not user_input.strip():
+        return "Sorry Sir, I didn't catch that. Could you repeat?"
+
+    # Step 1: Try to get realtime data first (fast path)
+    realtime_result = get_realtime_data(user_input)   # ← use the new function name
+
+    if realtime_result:
+        # We have fresh data → pass it to general LLM for personality
+        data_str = realtime_result.get("display_str") or str(realtime_result.get("key_data", ""))
+        enhanced_query = (
+            f"{user_input}\n\n"
+            f"Use this exact realtime information — do NOT invent or change any numbers:\n"
+            f"{data_str}"
+        )
+        answer = general(enhanced_query, extra_context=data_str)
+        return answer
+
+    # Step 2: Check for system commands (fast, no LLM needed)
+    # Prefer classifier for system detection so we can get a normalized English command
+    classification = classify_with_groq(user_input)
+
+    if classification and classification.get("category") == "system":
+        # Use the classifier's English-normalized prompt only for system handler
+        normalized_cmd = classification.get("normalized", user_input)
+        answer = handle_system_query(normalized_cmd)
+        if answer and "not recognized" not in answer.lower():
+            memory.add_exchange(user_input, answer)
+            return answer
+
+    # Fallback keyword heuristic if classifier failed or wasn't sure
+    query_lower = user_input.lower()
+    if any(kw in query_lower for kw in [
+        'open', 'close', 'play', 'launch', 'run', 'volume', 'shutdown', 'restart',
+        'file', 'folder', 'delete', 'window', 'minimize', 'maximize', 'settings'
+    ]):
+        answer = handle_system_query(user_input)
+        if answer and "not recognized" not in answer.lower():
+            memory.add_exchange(user_input, answer)
+            return answer
+
+    # Step 3: Everything else → normal general LLM
+    answer = general(user_input)
+    print(realtime_result)
+    return answer or "I'm afraid I don't have an answer for that right now, Sir."

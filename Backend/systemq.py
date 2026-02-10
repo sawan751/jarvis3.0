@@ -22,7 +22,7 @@
 # - Decrease volume
 # - Adjust settings
 #
-# Window Management: ye bhi sb complete bs 2 and 3 me dikkat
+# Window Management: ye sb complete
 # - Close window
 # - Minimize window
 # - Maximize window
@@ -39,8 +39,7 @@
 # restart, start, stop, launch, run, execute, file, folder, directory, window, application,
 # program, browser, settings, control, search
 
-from system import app_control, volume_control, file_control, system_control, window_control, search_control
-
+from Backend.system import app_control, volume_control, file_control, system_control, window_control, search_control
 def handle_system_query(query):
     """
     Dispatches system queries to appropriate handlers.
@@ -67,14 +66,19 @@ def handle_system_query(query):
 
     # Volume control
     elif "volume" in query_lower:
-        if "increase" in query_lower:
+        import re
+        # Check for specific percentage in the query
+        percent_match = re.search(r'(\d+)%?', query_lower)
+        if percent_match:
+            level = int(percent_match.group(1))
+            result = volume_control.set_volume(level)
+        elif "increase" in query_lower:
             result = volume_control.increase_volume()
-            
         elif "decrease" in query_lower:
             result = volume_control.decrease_volume()
         elif "what" in query_lower or "show" in query_lower:
-            result = volume_control._get_current_volume_percent()
-            
+            current_vol = volume_control._get_current_volume_percent()
+            result = f"Current volume is {current_vol}%"
         else:
             level = 50  # default
             result = volume_control.set_volume(level)
@@ -114,11 +118,13 @@ def handle_system_query(query):
             result = window_control.close_current_window()
     elif "close current tab" in query_lower or ("close" in query_lower and "tab" in query_lower):
         result = window_control.close_current_tab()
-    elif "minimize window" in query_lower:
-        window_title = query_lower.replace("minimize window", "").strip()
+    elif "minimize" in query_lower:
+        # Check if specific window title is mentioned (after "minimize" keyword)
+        window_title = query_lower.replace("minimize", "").replace("window", "").strip()
         result = window_control.minimize_window(window_title)
-    elif "maximize window" in query_lower:
-        window_title = query_lower.replace("maximize window", "").strip()
+    elif "maximize" in query_lower:
+        # Check if specific window title is mentioned (after "maximize" keyword)
+        window_title = query_lower.replace("maximize", "").replace("window", "").strip()
         result = window_control.maximize_window(window_title)
 
     # Search control
