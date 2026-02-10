@@ -1,0 +1,17 @@
+speechrecognition
+pyttsx3
+elevenlabs
+groq
+python-dotenv
+yfinance
+newsapi-python
+sounddevice
+soundfile
+PyQt6
+pycaw
+comtypes
+win32gui
+win32con
+win32api
+pywin32
+youtube-search-python
